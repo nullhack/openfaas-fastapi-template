@@ -1,0 +1,174 @@
+[tool.poetry]
+name = "handler"
+version = "2022.11.21"
+description = "Python template for OpenFAAS functions using FastAPI"
+authors = ["Eric Lopes <nullhack@users.noreply.github.com>"]
+maintainers = ["Eric Lopes <nullhack@users.noreply.github.com>"]
+license = "MIT"
+repository = "https://github.com/nullhack/function"
+documentation = "https://github.com/nullhack/function/tree/main/docs/api/"
+readme = "README.md"
+packages = [
+    { include = "handler" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^2.18.1"
+isort = "^5.10.1"
+black = {version = "^22.3.0", allow-prereleases = true}
+xdoctest = "^1.0.0"
+Pygments = "^2.11.2"
+darglint = "^1.8.1"
+pylint = "^2.13.4"
+poethepoet = "^0.16.4"
+mypy = "^0.942"
+flake8 = "^4.0.1"
+flake8-docstrings = "^1.6.0"
+flake8-todos = "^0.1.5"
+flake8-logging-format = "^0.6.0"
+flake8-builtins = "^1.5.3"
+flake8-pytest-style = "^1.6.0"
+flake8-bugbear = "^22.3.23"
+flake8-bandit = "^3.0.0"
+flake8-annotations = "^2.8.0"
+flake8-black = "^0.3.2"
+flake8-mypy = "^17.8.0"
+flake8-simplify = "^0.19.3"
+flake8-isort = "^5.0.0"
+pep8-naming = "^0.12.1"
+pytest = "7.1.1"
+pytest-html = "^3.1.1"
+pytest-sugar = "^0.9.6"
+pytest-flake8 = "^1.1.1"
+pytest-reverse = "^1.5.0"
+pytest-cov = "^3.0.0"
+pytest-bdd = "^6.1.1"
+mkdocs = "^1.4.2"
+mkdocs-material = "^8.5.10"
+mkdocs-gen-files = "^0.4.0"
+mkdocs-awesome-pages-plugin = "^2.8.0"
+mkapi = "^1.0.14"
+mako = "^1.2.3"
+
+[tool.poetry.scripts]
+-x = "poethepoet:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 79
+
+[tool.black]
+line-length = 79
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | docs
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = """
+--verbose \
+--maxfail=1 \
+--flake8 \
+--reverse \
+--color=yes \
+--cov=handler \
+--html=docs/pytest_report.html \
+--self-contained-html \
+--cov-fail-under=100 \
+--cov-report term-missing \
+--cov-report html:docs/cov-report \
+--doctest-modules \
+--cov-config=pyproject.toml"""
+testpaths = [
+    "tests",
+    "handler"
+]
+python_files = ["*_test.py"]
+python_functions = ["test_*"]
+render_collapsed = true
+bdd_features_base_dir = "features"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"
+    ]
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+warn_unused_ignores = true
+show_error_context = true
+error_summary = true
+pretty = true
+
+[tool.poe.tasks]
+install = "poetry install --only main"
+install-dev = "poetry install"
+run = "python -m handler.handler"
+test = "pytest"
+pre-commit = "pre-commit run --all-files"
+lint = "flake8"
+doc = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
+doc-html = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
+doc-publish = """mkdocs gh-deploy \
+--config-file docs/mkdocs.yaml \
+--no-directory-urls \
+--remote-branch docs"""
+
+[tool.poe.tasks.docker-build]
+cmd = """
+docker build 
+--build-arg TESTBUILD=$no_test \
+--build-arg BUILDTAG=$build_tag \
+--build-arg BUILDPLATFORM=$build_platform \
+--target $target \
+-t handler:$target-$build_tag ."""
+help = "Build a docker image to test the project in an isolated environment"
+args = [
+  { name = "no-test", default = true, type = "boolean" }, 
+  { name = "build-tag", default = "3-alpine" },
+  { name = "build-platform", default = "linux/amd64" },
+  { name = "target", default = "prod" },
+]
+

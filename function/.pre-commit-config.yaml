@@ -1,0 +1,48 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    -   id: trailing-whitespace
+        files: .*\.py
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: check-ast
+    -   id: check-case-conflict
+    -   id: check-docstring-first
+    -   id: check-merge-conflict
+    -   id: detect-private-key
+    -   id: end-of-file-fixer
+        files: .*\.py
+    -   id: mixed-line-ending
+    -   id: name-tests-test
+-   repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+    -   id: isort
+-   repo: local
+    hooks:
+    -   id: flake8-lint
+        name: flake8-lint
+        stages: [commit, push]
+        language: system
+        entry: poe lint
+        types: [python]
+        pass_filenames: false
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: pytest
+        stages: [commit]
+        language: system
+        entry: poe test
+        types: [python]
+        pass_filenames: false
+-   repo: local
+    hooks:
+    -   id: api-documentation
+        name: api-documentation
+        stages: [push]
+        language: system
+        entry: poe doc
+        types: [python]
+        pass_filenames: false

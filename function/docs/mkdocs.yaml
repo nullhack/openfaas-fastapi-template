@@ -1,0 +1,51 @@
+site_name: function
+site_url: https://nullhack.github.io/function
+site_description: Python template for OpenFAAS functions using FastAPI
+site_author: Eric Lopes
+site_dir: html
+repo_name: nullhack/function
+repo_url: https://github.com/nullhack/function
+
+plugins:
+  - search
+  - mkapi
+  - awesome-pages
+  - gen-files:
+      scripts:
+        - gen_pages.py
+
+theme:
+  name: material
+  palette:
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: blue
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: black
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to dark mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  #logo: img/logo.svg
+  #favicon: img/favicon.png
+  language: en
+
+
+nav:
+  - index.md
+  - ... | readme.md
+  - ... | scenarios/**/*.md
+  - API: mkapi/api/handler
+  - Tests: mkapi/tests/tests
+

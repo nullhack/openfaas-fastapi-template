@@ -7,7 +7,6 @@ import-order-style = google
 docstring-convention = google
 per-file-ignores = 
   tests/*:S101
-  handler/server/api.py:DAR101,DAR201,DAR401
 max-complexity = 10
 exclude =
     docs/

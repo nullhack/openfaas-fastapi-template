@@ -12,7 +12,7 @@ COPY function/tests tests
 COPY function/features features
 COPY function/pyproject.toml .
 COPY function/poetry.lock .
-COPY function/README.md .
+COPY README.md .
 COPY function/.pre-commit-config.yaml .
 COPY function/.flake8 .
 
@@ -48,8 +48,7 @@ COPY --chown=user:user --from=test /home/user/app/dist dist
 
 RUN pip install --no-cache -r requirements.txt dist/*.whl --user
 
-# ENV fprocess="poetry run server"
-ENV fprocess="poetry run server"
+ENV fprocess="python -m handler.server.api"
 
 ENV cgi_headers="true"
 ENV mode="http"
@@ -59,8 +58,3 @@ ENV write_debug="false"
 HEALTHCHECK --interval=5s CMD [ -e /tmp/.lock ] || exit 1
 
 CMD ["fwatchdog"]
-
-
-# ENTRYPOINT ["python", "-m"]
-# CMD ["handler.handler"]
-

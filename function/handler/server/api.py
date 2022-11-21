@@ -117,6 +117,7 @@ app.openapi = custom_openapi
 @app.get(
     "/docs",
     response_class=HTMLResponse,
+    description="Swagger UI HTML.",
     summary="Function Swagger UI Doc",
     response_description="Swagger UI documentation rendered as HTML (for consumption directly in a web browser)",
     include_in_schema=False,
@@ -152,11 +153,19 @@ def check_auth(data: UserLoginSchema) -> bool:
 body = Body()
 
 
-@app.post("/auth", tags=["Auth"])
+@app.post("/auth", tags=["Auth"], description="User login.")
 async def user_login(user: UserLoginSchema = body) -> dict:
-    """Returns a JWT if the user is authenticated."""
-    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
-    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
+    """Returns a JWT if the user is authenticated.
+
+    Arguments:
+        user (UserLoginSchema): User login object.
+
+    Returns:
+        A JWT response signed.
+
+    Raises:
+        HTTPException: If user fails to authenticate.
+    """
     jwt_response = {}
     if check_auth(user):
         jwt_response = sign_jwt(user.user_id)
@@ -165,19 +174,24 @@ async def user_login(user: UserLoginSchema = body) -> dict:
     return jwt_response
 
 
-@app.get("/", tags=["Request"])
+@app.get("/", tags=["Request"], description="Read root.")
 async def read_root(request: Request) -> dict:
-    """Defines actions to be taken when a get request is made to the root page."""
-    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
-    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
+    """Defines actions to be taken when a get request is made to the root page.
+
+    Arguments:
+        request (Request): User request object.
+
+    Returns:
+        Dictionary containing the request parameters.
+    """
     return {"params": request.query_params}
 
 
 @app.post(
     "/",
     status_code=status.HTTP_200_OK,
+    description="Handle the request.",
     response_model=ResponseModel,
-    summary=handler.FUNCTION_SUMMARY,
     response_description=handler.FUNCTION_RESPONSE_DESC,
     tags=["Request"],
     dependencies=[Depends(JWTBearer())],
@@ -186,9 +200,17 @@ async def handle_request(
     *,
     req: RequestModel,
 ) -> dict:
-    """Defines actions to be taken when a post request is made to the root page."""
-    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
-    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
+    """Defines actions to be taken when a post request is made to the root page.
+
+    Arguments:
+        req (RequestModel): User request object.
+
+    Returns:
+        Dictionary containing the response.
+
+    Raises:
+        HTTPException: When the handler raises any Exception.
+    """
     try:
         res = ResponseModel(data=handler.handle(req.data))
     except Exception:

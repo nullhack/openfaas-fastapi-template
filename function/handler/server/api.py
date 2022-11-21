@@ -1,3 +1,4 @@
+"""Defines how the API will handle requests."""
 import json
 
 from fastapi import Body, Depends, FastAPI, HTTPException, Request
@@ -10,12 +11,6 @@ from .auth.auth_bearer import JWTBearer
 from .auth.auth_handler import sign_jwt
 from .model import RequestModel, ResponseModel, UserLoginSchema
 
-# https://github.com/testdrivenio/fastapi-jwt
-# https://testdriven.io/blog/fastapi-jwt-auth/
-
-# https://www.linode.com/docs/guides/documenting-a-fastapi-app-with-openapi/
-
-
 app = FastAPI(docs_url=None, redoc_url=None)
 
 
@@ -27,8 +22,18 @@ def get_swagger_ui_html(
     swagger_css_url: str = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui.css",
     swagger_favicon_url: str = "https://raw.githubusercontent.com/openfaas/docs/master/docs/images/favicon.ico",
 ) -> HTMLResponse:
-    """A tweaked fastapi.openapi.docs.get_swagger_ui_html to generate from raw JSON as opposed to using a url"""
+    """A tweaked fastapi.openapi.docs.get_swagger_ui_html to generate from raw JSON as opposed to using a url.
 
+    Arguments:
+        openapi_spec (str): OpenAPI speficication JSON encoded as string.
+        title (str): Title of the page.
+        swagger_js_url (str): Custom Javascript URL.
+        swagger_css_url (str): Custom CSS URL.
+        swagger_favicon_url (str): Custom favicon URL.
+
+    Returns:
+        HTMLResponse: Renderized documentation page as HTML.
+    """
     html = f"""
     <!DOCTYPE html>
     <html>
@@ -63,8 +68,12 @@ def get_swagger_ui_html(
     return HTMLResponse(html)
 
 
-def custom_openapi():
-    """Generates schema from OpenFaas function particulars"""
+def custom_openapi() -> dict:
+    """Generates schema from OpenFaas function particulars.
+
+    Returns:
+        An OpenAPI schema.
+    """
     openapi_schema = get_openapi(
         title=f"The Amazing Programming Language Info API - {handler.FUNCTION_NAME}",
         version=f"v{handler.FUNCTION_VERSION}",
@@ -113,6 +122,11 @@ app.openapi = custom_openapi
     include_in_schema=False,
 )
 async def swagger_ui_html() -> HTMLResponse:
+    """Returns a swagger html.
+
+    Returns:
+        A HTMLResponse containing the UI specified in the OpenAPI specification.
+    """
     openapi_html = get_swagger_ui_html(
         openapi_spec=json.dumps(app.openapi()),
         title=f"OpenFaas function: {handler.FUNCTION_NAME.title()}",
@@ -120,14 +134,26 @@ async def swagger_ui_html() -> HTMLResponse:
     return openapi_html
 
 
-def check_auth(data: UserLoginSchema):
+def check_auth(data: UserLoginSchema) -> bool:
+    """Checks the user login.
+
+    Arguments:
+        data (UserLoginSchema): User login data.
+
+    Returns:
+        True if the login is correct and False iff it is not.
+    """
     if data.user_id and data.password:
         return True
     return False
 
 
+body = Body()
+
+
 @app.post("/auth", tags=["Auth"])
-async def user_login(user: UserLoginSchema = Body(...)) -> dict:
+async def user_login(user: UserLoginSchema = body) -> dict:
+    # async def user_login(user: UserLoginSchema = Body(...)) -> dict:
     jwt_response = {}
     if check_auth(user):
         jwt_response = sign_jwt(user.user_id)
@@ -150,22 +176,23 @@ async def read_root(request: Request) -> dict:
     tags=["Request"],
     dependencies=[Depends(JWTBearer())],
 )
-def handle_request(
+async def handle_request(
     *,
     req: RequestModel,
 ) -> dict:
     try:
         res = ResponseModel(data=handler.handle(req.data))
-    except Exception as err:
+    except Exception:
         raise HTTPException(status_code=500, detail="An API Error occurred")
     return res
 
 
-def run():
+def run() -> None:
+    """Run the server."""
     import uvicorn
 
     uvicorn.run(
-        "handler.server.api:app", host="0.0.0.0", port=8000, reload=True
+        "handler.server.api:app", host="127.0.0.1", port=8000, reload=True
     )
 
 

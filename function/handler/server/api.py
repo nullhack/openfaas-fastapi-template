@@ -143,9 +143,10 @@ def check_auth(data: UserLoginSchema) -> bool:
     Returns:
         True if the login is correct and False iff it is not.
     """
+    check = False
     if data.user_id and data.password:
-        return True
-    return False
+        check = True
+    return check
 
 
 body = Body()
@@ -153,7 +154,9 @@ body = Body()
 
 @app.post("/auth", tags=["Auth"])
 async def user_login(user: UserLoginSchema = body) -> dict:
-    # async def user_login(user: UserLoginSchema = Body(...)) -> dict:
+    """Returns a JWT if the user is authenticated."""
+    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
+    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
     jwt_response = {}
     if check_auth(user):
         jwt_response = sign_jwt(user.user_id)
@@ -164,6 +167,9 @@ async def user_login(user: UserLoginSchema = body) -> dict:
 
 @app.get("/", tags=["Request"])
 async def read_root(request: Request) -> dict:
+    """Defines actions to be taken when a get request is made to the root page."""
+    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
+    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
     return {"params": request.query_params}
 
 
@@ -180,6 +186,9 @@ async def handle_request(
     *,
     req: RequestModel,
 ) -> dict:
+    """Defines actions to be taken when a post request is made to the root page."""
+    # TODO(Eric Lopes): Check why expanding documentation of @app fails. Exception added to .flake8
+    # https://github.com/nullhack/openfaas-fastapi-template/issues/1
     try:
         res = ResponseModel(data=handler.handle(req.data))
     except Exception:

@@ -36,6 +36,6 @@ for feature_path in features_dir.glob("**/*.feature"):
                 elif any([line.strip().startswith(l) for l in ignore_lines]):
                     continue
                 else:
-                    write_line = f">    {line}"
+                    write_line = f">     {line}"
 
                 gf.write(write_line)

@@ -11,7 +11,10 @@ from .auth.auth_bearer import JWTBearer
 from .auth.auth_handler import sign_jwt
 from .model import RequestModel, ResponseModel, UserLoginSchema
 
-app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI(
+    docs_url=None,
+    redoc_url=None,
+)
 
 
 def get_swagger_ui_html(
@@ -75,12 +78,18 @@ def custom_openapi() -> dict:
         An OpenAPI schema.
     """
     openapi_schema = get_openapi(
-        title=f"The Amazing Programming Language Info API - {handler.FUNCTION_NAME}",
+        title="The Amazing Programming Language Info API",
         version=f"v{handler.FUNCTION_VERSION}",
         routes=app.routes,
     )
+
+    openapi_schema["servers"] = [
+        {"url": f"/function/{handler.FUNCTION_NAME}"},
+        {"url": "/"},
+    ]
+
     openapi_schema["info"] = {
-        "title": f"The Amazing Programming Language Info API - {handler.FUNCTION_NAME}",
+        "title": "The Amazing Programming Language Info API",
         "version": f"v{handler.FUNCTION_VERSION}",
         "description": "Learn about programming language history!",
         "termsOfService": "http://programming-languages.com/terms/",
@@ -142,7 +151,7 @@ def check_auth(data: UserLoginSchema) -> bool:
         data (UserLoginSchema): User login data.
 
     Returns:
-        True if the login is correct and False iff it is not.
+        True if the login is correct and False if it is not.
     """
     check = False
     if data.user_id and data.password:

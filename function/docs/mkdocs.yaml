@@ -44,8 +44,8 @@ theme:
 
 nav:
   - index.md
-  - ... | readme.md
-  - ... | scenarios/**/*.md
+  - ... | glob=readme.md
+  - ... | regex=scenarios/.+.md
   - API: mkapi/api/handler
   - Tests: mkapi/tests/tests
 

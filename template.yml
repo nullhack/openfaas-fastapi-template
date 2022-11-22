@@ -1,5 +1,1 @@
 language: openfaas-fastapi-template
-environment:
-  write_timeout: 1m
-  read_timeout: 1m
-  exec_timeout: 1m

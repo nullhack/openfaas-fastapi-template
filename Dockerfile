@@ -12,7 +12,7 @@ COPY function/tests tests
 COPY function/features features
 COPY function/pyproject.toml .
 COPY function/poetry.lock .
-COPY README.md .
+COPY function/README.md .
 COPY function/.pre-commit-config.yaml .
 COPY function/.flake8 .
 

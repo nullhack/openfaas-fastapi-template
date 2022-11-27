@@ -1,5 +1,6 @@
 """Defines how the API will handle requests."""
 import json
+import os
 
 from fastapi import Body, Depends, FastAPI, HTTPException, Request
 from starlette import status
@@ -16,7 +17,7 @@ app = FastAPI(
     redoc_url=None,
     servers=[
         {"url": "/"},
-        {"url": f"/function/{handler.FUNCTION_NAME}"},
+        {"url": f"/function/{os.getenv('FUNCNAME', '')}"},
     ],
 )
 

@@ -2,38 +2,42 @@ ARG BUILDPLATFORM=linux/amd64
 ARG BUILDTAG=3-alpine
 FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.10 as watchdog
 
-
-FROM --platform=$BUILDPLATFORM python:$BUILDTAG as base_build
+FROM --platform=$BUILDPLATFORM python:$BUILDTAG as test
 
 WORKDIR /home/user/app
 
-COPY function/handler handler
-COPY function/tests tests
-COPY function/features features
-COPY function/pyproject.toml .
-COPY function/poetry.lock .
-COPY function/README.md .
-COPY function/.pre-commit-config.yaml .
-COPY function/.flake8 .
-
 ENV PATH=$PATH:/home/user/.local/bin
-
-FROM base_build as test
-
-ARG TESTBUILD=True
-ENV TESTBUILD=$TESTBUILD
 
 RUN pip install --no-cache poetry poethepoet
 RUN poetry config --no-cache
-RUN poe install-dev
+COPY function/pyproject.toml .
+COPY function/poetry.lock .
+RUN poetry install --no-root
+
+COPY function/.pre-commit-config.yaml .
+COPY function/.flake8 .
+COPY function/README.md .
+COPY function/features features
+COPY function/handler handler
+COPY function/tests tests
+
+RUN poetry install
+
 RUN poetry build --format=wheel
 RUN poetry export --only main -f requirements.txt --without-hashes --output requirements.txt
+
+ARG TESTBUILD=True
+ENV TESTBUILD=$TESTBUILD
 RUN if [ "$TESTBUILD" = 'True' ]; then poe test; fi
 
 ENTRYPOINT ["poe", "-q"]
 CMD ["test"]
 
+
 FROM --platform=$BUILDPLATFORM python:$BUILDTAG as prod
+
+ARG FUNCNAME=''
+ENV FUNCNAME=$FUNCNAME
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog

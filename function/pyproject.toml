@@ -160,6 +160,7 @@ doc-publish = """mkdocs gh-deploy \
 --config-file docs/mkdocs.yaml \
 --no-directory-urls \
 --remote-branch docs"""
+docker = ["docker-build", "docker-run"]
 
 [tool.poe.tasks.docker-build]
 cmd = """
@@ -177,3 +178,15 @@ args = [
   { name = "target", default = "prod" },
 ]
 
+[tool.poe.tasks.docker-run]
+cmd = """
+docker run
+-ti \
+--rm \
+--network host \
+handler:$target-$build_tag """
+help = "Run the generated docker image to test the project in an isolated environment"
+args = [
+  { name = "build-tag", default = "3-alpine" },
+  { name = "target", default = "prod" },
+]

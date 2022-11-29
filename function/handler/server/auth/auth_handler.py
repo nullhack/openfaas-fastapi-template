@@ -7,7 +7,7 @@ import logging
 import secrets
 import time
 
-import jwt
+from jose import jwt
 
 logger = logging.getLogger("token handler")
 

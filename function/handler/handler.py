@@ -1,7 +1,7 @@
 """This module defines how requests are handled by the server."""
 
 
-def handle(req: dict, auth_token: dict = {}) -> dict:  # noqa: S107
+def handle(req: dict, auth_token: dict = None) -> dict:  # noqa: S107
     """Handle a request to the function.
 
     Args:
@@ -11,4 +11,4 @@ def handle(req: dict, auth_token: dict = {}) -> dict:  # noqa: S107
     Returns:
         A dictionary containing the results for the request.
     """
-    return {"auth_token": auth_token}
+    return {"req": req, "auth_token": auth_token}

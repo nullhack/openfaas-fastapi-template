@@ -121,7 +121,9 @@ async def handle_request(
     try:
         token = await JWEBearer()(request)
         auth_token = decrypt_jwe(token)
-        res = ResponseModel(data=handler.handle(req_model.data, auth_token=auth_token))
+        res = ResponseModel(
+            data=handler.handle(req_model.data, auth_token=auth_token)
+        )
     except Exception:
         raise HTTPException(status_code=500, detail="An API Error occurred")
     return res

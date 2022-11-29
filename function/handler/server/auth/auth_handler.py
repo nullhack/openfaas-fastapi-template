@@ -17,8 +17,6 @@ JWE_SECRET = secrets.token_urlsafe(24)
 JWE_ALGORITHM = "A256KW"
 JWE_ENCRYPTION = "A256GCM"
 
-logger.error(JWE_SECRET)
-
 
 def token_response(token: str) -> dict[str, str]:
     """Returns a token response for a given token.
@@ -32,14 +30,17 @@ def token_response(token: str) -> dict[str, str]:
     return {"access_token": token}
 
 
-def encrypt_jwe() -> dict[str, str]:
+def encrypt_jwe(issuer: str = "") -> dict[str, str]:
     """Sign a paylod and return the signed token.
+
+    Arguments:
+        issuer (str): The entity that issued the token.
 
     Returns:
         A token with the signed payload.
     """
     t = time.time()
-    payload = json.dumps({"iat": t, "exp": t + 86400})
+    payload = json.dumps({"iss": issuer, "iat": t, "exp": t + 86400})
     token = jwe.encrypt(
         payload,
         JWE_SECRET.encode(),

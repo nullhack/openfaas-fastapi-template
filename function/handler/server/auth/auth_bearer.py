@@ -1,6 +1,6 @@
-"""A module to bear JWT tokens.
+"""A module to bear JWE tokens.
 
-This module is responsible for defining a JWT beared classs to be used in fastapi.
+This module is responsible for defining a JWE beared classs to be used in fastapi.
 """
 from typing import TypeVar
 
@@ -9,19 +9,19 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from .auth_handler import decrypt_jwe
 
-Self = TypeVar("Self", bound="JWTBearer")
+Self = TypeVar("Self", bound="JWEBearer")
 
 
-class JWTBearer(HTTPBearer):
-    """A class to define a JWT Token Bearer."""
+class JWEBearer(HTTPBearer):
+    """A class to define a JWE Token Bearer."""
 
     def __init__(self: Self, auto_error: bool = True) -> None:
-        """Initialize JWTBearer instances.
+        """Initialize JWEBearer instances.
 
         Arguments:
             auto_error (bool): define auto error for HTTPBearer. Default `True`.
         """
-        super(JWTBearer, self).__init__(auto_error=auto_error)
+        super(JWEBearer, self).__init__(auto_error=auto_error)
 
     async def __call__(self: Self, request: Request) -> str:
         """Define behaviour when the class is called.
@@ -36,7 +36,7 @@ class JWTBearer(HTTPBearer):
             HTTPException: If there's any issue with the credentials.
         """
         credentials: HTTPAuthorizationCredentials = await super(
-            JWTBearer, self
+            JWEBearer, self
         ).__call__(request)
 
         checked_credentials = ""
@@ -59,10 +59,10 @@ class JWTBearer(HTTPBearer):
         return checked_credentials
 
     def verify_jwe(self: Self, jwe_token: str) -> bool:
-        """Verify a JWT token.
+        """Verify a JWE token.
 
         Arguments:
-            jwe_token (str): JWT token to be verified.
+            jwe_token (str): JWE token to be verified.
 
         Returns:
             A boolean showing if the token is valid or not.

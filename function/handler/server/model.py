@@ -1,19 +1,17 @@
 """This module defines models used by fastapi."""
-from typing import Dict
-
 from pydantic import BaseModel, Field
 
 
 class RequestModel(BaseModel):
     """Define a request model."""
 
-    data: Dict
+    data: dict
 
 
 class ResponseModel(BaseModel):
     """Define a response model."""
 
-    data: Dict
+    data: dict
 
 
 class UserLoginSchema(BaseModel):

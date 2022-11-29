@@ -7,17 +7,19 @@ from starlette import status
 from starlette.responses import HTMLResponse
 
 from .. import handler
-from .auth.auth_bearer import JWTBearer
+from .auth.auth_bearer import JWEBearer
 from .auth.auth_handler import encrypt_jwe
 from .model import RequestModel, ResponseModel, UserLoginSchema
 from .utils.swagger import get_swagger_ui_html
+
+func_name = os.getenv("FUNCNAME", "")
 
 app = FastAPI(
     docs_url=None,
     redoc_url=None,
     servers=[
         {"url": "/"},
-        {"url": f"/function/{os.getenv('FUNCNAME', '')}"},
+        {"url": f"/function/{func_name}"},
     ],
 )
 
@@ -38,7 +40,7 @@ async def swagger_ui_html() -> HTMLResponse:
     """
     openapi_html = get_swagger_ui_html(
         openapi_spec=json.dumps(app.openapi()),
-        title=f"OpenFaas function: {handler.FUNCTION_NAME.title()}",
+        title=f"OpenFaas function: {func_name}",
     )
     return openapi_html
 
@@ -59,20 +61,20 @@ def check_auth(data: UserLoginSchema) -> bool:
 
 @app.post("/auth", tags=["Auth"], description="User login.")
 async def user_login(user: UserLoginSchema = body) -> dict:
-    """Returns a JWT if the user is authenticated.
+    """Returns a JWE if the user is authenticated.
 
     Arguments:
         user (UserLoginSchema): User login object.
 
     Returns:
-        A JWT response signed.
+        A JWE response signed.
 
     Raises:
         HTTPException: If user fails to authenticate.
     """
     jwe_response = {}
     if check_auth(user):
-        jwe_response = encrypt_jwe()
+        jwe_response = encrypt_jwe(issuer=func_name)
     else:
         raise HTTPException(status_code=403, detail="Wrong credentials")
     return jwe_response
@@ -97,16 +99,18 @@ async def read_root(request: Request) -> dict:
     description="Handle the request.",
     response_model=ResponseModel,
     tags=["Request"],
-    dependencies=[Depends(JWTBearer())],
+    dependencies=[Depends(JWEBearer())],
 )
 async def handle_request(
     *,
-    req: RequestModel,
+    req_model: RequestModel,
+    request: Request,
 ) -> dict:
     """Defines actions to be taken when a post request is made to the root page.
 
     Arguments:
-        req (RequestModel): User request object.
+        req_model (RequestModel): User request object.
+        request (Request): FastAPI request object.
 
     Returns:
         Dictionary containing the response.
@@ -115,7 +119,8 @@ async def handle_request(
         HTTPException: When the handler raises any Exception.
     """
     try:
-        res = ResponseModel(data=handler.handle(req.data))
+        token = await JWEBearer()(request)
+        res = ResponseModel(data=handler.handle(req_model.data, token=token))
     except Exception:
         raise HTTPException(status_code=500, detail="An API Error occurred")
     return res

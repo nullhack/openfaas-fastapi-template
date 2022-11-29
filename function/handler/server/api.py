@@ -8,7 +8,7 @@ from starlette.responses import HTMLResponse
 
 from .. import handler
 from .auth.auth_bearer import JWTBearer
-from .auth.auth_handler import sign_jwt
+from .auth.auth_handler import encrypt_jwe
 from .model import RequestModel, ResponseModel, UserLoginSchema
 from .utils.swagger import get_swagger_ui_html
 
@@ -71,12 +71,12 @@ async def user_login(user: UserLoginSchema = body) -> dict:
     Raises:
         HTTPException: If user fails to authenticate.
     """
-    jwt_response = {}
+    jwe_response = {}
     if check_auth(user):
-        jwt_response = sign_jwt(user.user_id)
+        jwe_response = encrypt_jwe(user.user_id)
     else:
         raise HTTPException(status_code=403, detail="Wrong credentials")
-    return jwt_response
+    return jwe_response
 
 
 @app.get("/", tags=["Request"], description="Read root.")

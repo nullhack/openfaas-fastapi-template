@@ -7,7 +7,7 @@ from typing import TypeVar
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from .auth_handler import decode_jwt
+from .auth_handler import decrypt_jwe
 
 Self = TypeVar("Self", bound="JWTBearer")
 
@@ -46,7 +46,7 @@ class JWTBearer(HTTPBearer):
                 raise HTTPException(
                     status_code=403, detail="Invalid authentication scheme."
                 )
-            if not self.verify_jwt(credentials.credentials):
+            if not self.verify_jwe(credentials.credentials):
                 raise HTTPException(
                     status_code=403, detail="Invalid token or expired token."
                 )
@@ -58,11 +58,11 @@ class JWTBearer(HTTPBearer):
 
         return checked_credentials
 
-    def verify_jwt(self: Self, jwt_token: str) -> bool:
+    def verify_jwe(self: Self, jwe_token: str) -> bool:
         """Verify a JWT token.
 
         Arguments:
-            jwt_token (str): JWT token to be verified.
+            jwe_token (str): JWT token to be verified.
 
         Returns:
             A boolean showing if the token is valid or not.
@@ -70,7 +70,7 @@ class JWTBearer(HTTPBearer):
         is_token_valid: bool = False
 
         try:
-            payload = decode_jwt(jwt_token)
+            payload = decrypt_jwe(jwe_token)
         except Exception:
             payload = {}
         is_token_valid = True if payload else False

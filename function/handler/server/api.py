@@ -52,9 +52,8 @@ def check_auth(data: UserLoginSchema) -> bool:
     Returns:
         True if the login is correct and False if it is not.
     """
-    check = False
-    if data.user_id and data.password:
-        check = True
+    # To improve authentication rules change the line below!
+    check = bool(data.user_id and data.password)
     return check
 
 
@@ -73,7 +72,7 @@ async def user_login(user: UserLoginSchema = body) -> dict:
     """
     jwe_response = {}
     if check_auth(user):
-        jwe_response = encrypt_jwe(user.user_id)
+        jwe_response = encrypt_jwe()
     else:
         raise HTTPException(status_code=403, detail="Wrong credentials")
     return jwe_response

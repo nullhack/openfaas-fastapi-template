@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "handler"
-version = "2022.11.21"
+version = "2022.11.29"
 description = "Python template for OpenFAAS functions using FastAPI"
 authors = ["Eric Lopes <nullhack@users.noreply.github.com>"]
 maintainers = ["Eric Lopes <nullhack@users.noreply.github.com>"]

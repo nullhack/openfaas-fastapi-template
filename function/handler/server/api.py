@@ -8,7 +8,7 @@ from starlette.responses import HTMLResponse
 
 from .. import handler
 from .auth.auth_bearer import JWEBearer
-from .auth.auth_handler import encrypt_jwe
+from .auth.auth_handler import decrypt_jwe, encrypt_jwe
 from .model import RequestModel, ResponseModel, UserLoginSchema
 from .utils.swagger import get_swagger_ui_html
 
@@ -120,7 +120,8 @@ async def handle_request(
     """
     try:
         token = await JWEBearer()(request)
-        res = ResponseModel(data=handler.handle(req_model.data, token=token))
+        auth_token = decrypt_jwe(token)
+        res = ResponseModel(data=handler.handle(req_model.data, auth_token=auth_token))
     except Exception:
         raise HTTPException(status_code=500, detail="An API Error occurred")
     return res

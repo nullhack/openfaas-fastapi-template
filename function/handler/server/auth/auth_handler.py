@@ -18,7 +18,7 @@ JWE_ALGORITHM = "A256KW"
 JWE_ENCRYPTION = "A256GCM"
 
 
-def token_response(token: str) -> dict[str, str]:
+def token_response(token: str) -> dict:
     """Returns a token response for a given token.
 
     Arguments:
@@ -30,17 +30,22 @@ def token_response(token: str) -> dict[str, str]:
     return {"access_token": token}
 
 
-def encrypt_jwe(issuer: str = "") -> dict[str, str]:
+def encrypt_jwe(
+    expiry_seconds: int = 86400,
+    **token_attrs: dict,
+) -> dict:
     """Sign a paylod and return the signed token.
 
     Arguments:
-        issuer (str): The entity that issued the token.
+        expiry_seconds (int): Amount of seconds before expire.
+        token_attrs (dict): Attributes to be encrypted with the token.
 
     Returns:
         A token with the signed payload.
     """
     t = time.time()
-    payload = json.dumps({"iss": issuer, "iat": t, "exp": t + 86400})
+    token_attrs = token_attrs | {"iat": t, "exp": t + expiry_seconds}
+    payload = json.dumps(token_attrs)
     token = jwe.encrypt(
         payload,
         JWE_SECRET.encode(),
@@ -51,7 +56,7 @@ def encrypt_jwe(issuer: str = "") -> dict[str, str]:
     return token_response(token)
 
 
-def decrypt_jwe(token: str) -> dict[str, str]:
+def decrypt_jwe(token: str) -> dict:
     """Decode the token.
 
     Arguments:

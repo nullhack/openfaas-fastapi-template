@@ -45,20 +45,6 @@ async def swagger_ui_html() -> HTMLResponse:
     return openapi_html
 
 
-def check_auth(data: UserLoginSchema) -> bool:
-    """Checks the user login.
-
-    Arguments:
-        data (UserLoginSchema): User login data.
-
-    Returns:
-        True if the login is correct and False if it is not.
-    """
-    # To improve authentication rules change the line below!
-    check = bool(data.user_id and data.password)
-    return check
-
-
 @app.post("/auth", tags=["Auth"], description="User login.")
 async def user_login(user: UserLoginSchema = body) -> dict:
     """Returns a JWE if the user is authenticated.
@@ -73,8 +59,8 @@ async def user_login(user: UserLoginSchema = body) -> dict:
         HTTPException: If user fails to authenticate.
     """
     jwe_response = {}
-    if check_auth(user):
-        jwe_response = encrypt_jwe(issuer=func_name)
+    if handler.check_auth(user):
+        jwe_response = encrypt_jwe(iss=func_name)
     else:
         raise HTTPException(status_code=403, detail="Wrong credentials")
     return jwe_response

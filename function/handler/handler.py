@@ -1,7 +1,22 @@
 """This module defines how requests are handled by the server."""
+from .server.model import UserLoginSchema
 
 
-def handle(req: dict, auth_token: dict = None) -> dict:  # noqa: S107
+def check_auth(login_data: UserLoginSchema) -> bool:
+    """Checks the user login.
+
+    Arguments:
+        login_data (UserLoginSchema): User login data.
+
+    Returns:
+        True if the login is correct and False if it is not.
+    """
+    # To improve authentication rules change the line below!
+    check = bool(login_data.user_id and login_data.password)
+    return check
+
+
+def handle(req: dict, auth_token: dict = None) -> dict:
     """Handle a request to the function.
 
     Args:

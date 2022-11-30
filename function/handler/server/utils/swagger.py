@@ -10,7 +10,7 @@ def get_swagger_ui_html(
     swagger_css_url: str = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui.css",
     swagger_favicon_url: str = "https://raw.githubusercontent.com/openfaas/docs/master/docs/images/favicon.ico",
 ) -> HTMLResponse:
-    """A tweaked fastapi.openapi.docs.get_swagger_ui_html to generate from raw JSON as opposed to using a url.
+    """A tweaked on fastapi.openapi.docs.get_swagger_ui_html to generate from raw JSON as opposed to using a url.
 
     Arguments:
         openapi_spec (str): OpenAPI speficication JSON encoded as string.

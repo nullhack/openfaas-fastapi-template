@@ -1,4 +1,4 @@
-"""This module defines models used by fastapi."""
+"""This module defines models used by FastAPI."""
 from pydantic import BaseModel, Field
 
 

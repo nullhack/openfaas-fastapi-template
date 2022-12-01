@@ -7,7 +7,6 @@ maintainers = ["Eric Lopes <nullhack@users.noreply.github.com>"]
 license = "MIT"
 repository = "https://github.com/nullhack/function"
 documentation = "https://github.com/nullhack/function/tree/main/docs/api/"
-readme = "README.md"
 packages = [
     { include = "handler" },
 ]
@@ -16,7 +15,7 @@ packages = [
 python = "^3.10"
 fastapi = "^0.86.0"
 uvicorn = "^0.19.0"
-python-jose = "^3.3.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^2.18.1"

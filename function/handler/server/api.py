@@ -67,6 +67,7 @@ async def user_login(user: UserLoginSchema = body) -> dict:
 
 
 @app.get("/", tags=["Request"], description="Read root.")
+@app.post("/", tags=["Request"], description="Read root.")
 async def read_root(request: Request) -> dict:
     """Defines actions to be taken when a get request is made to the root page.
 
@@ -80,7 +81,7 @@ async def read_root(request: Request) -> dict:
 
 
 @app.post(
-    "/",
+    "/handle",
     status_code=status.HTTP_200_OK,
     description="Handle the request.",
     response_model=ResponseModel,
@@ -115,7 +116,7 @@ async def handle_request(
     return res
 
 
-def run() -> None:
+def run() -> None:  # pragma: no cover
     """Run the server."""
     import uvicorn
 

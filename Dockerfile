@@ -16,7 +16,6 @@ RUN poetry install --no-root
 
 COPY function/.pre-commit-config.yaml .
 COPY function/.flake8 .
-COPY function/README.md .
 COPY function/features features
 COPY function/handler handler
 COPY function/tests tests
@@ -40,10 +39,14 @@ ARG FUNCNAME=''
 ENV FUNCNAME=$FUNCNAME
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
+
 RUN chmod +x /usr/bin/fwatchdog
 
 RUN addgroup --system user && adduser --system user --ingroup user
+
 USER user
+
+ENV PATH=$PATH:/home/user/.local/bin
 
 WORKDIR /home/user/app
 
@@ -53,7 +56,6 @@ COPY --chown=user:user --from=test /home/user/app/dist dist
 RUN pip install --no-cache -r requirements.txt dist/*.whl --user
 
 ENV fprocess="python -m handler.server.api"
-
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:8000"

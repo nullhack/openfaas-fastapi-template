@@ -51,31 +51,31 @@ def test_auth(user_id: str, password: str, status_code: int) -> None:
 @pytest.mark.parametrize(
     ("authorization", "status_code"),
     [
+        ("", 403),
+        ("Not eyJhbGciOiJB", 403),
         ("Bearer eyJhbGciOiJB", 403),
         ("Bearer", 403),
-        ("Not eyJhbGciOiJB", 403),
-        ("", 403),
     ],
 )
-def test_handle(authorization: str, status_code: int) -> None:
-    """Test handle and authentication.
+def test_invalid_handle(authorization: str, status_code: int) -> None:
+    """Test invalid handle and authentication.
 
     Arguments:
         authorization (str): Authorization string.
         status_code (int): Expected status code returned.
     """
     payload = json.dumps({"data": ""})
-    h = {
+    header = {
         "Authorization": authorization,
         "accept": "application/json",
         "Content-Type": "application/json",
     }
-    response = client.post("/handle", data=payload, headers=h)
+    response = client.post("/handle", data=payload, headers=header)
     assert response.status_code == status_code
 
 
 def test_valid_handle() -> None:
-    """Test docs generation."""
+    """Test valid handling."""
     payload = json.dumps(
         {
             "user_id": "user_id",
@@ -84,4 +84,12 @@ def test_valid_handle() -> None:
     )
     response = client.post("/auth", data=payload)
     assert response.status_code == 200
-    assert response.__dict__ == "test"
+    token = json.loads(response._content.decode())["access_token"]
+    payload = json.dumps({"data": ""})
+    header = {
+        "Authorization": f"Bearer {token}",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    }
+    response = client.post("/handle", data=payload, headers=header)
+    assert response.status_code == 200

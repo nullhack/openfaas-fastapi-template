@@ -111,7 +111,9 @@ async def handle_request(
         res = ResponseModel(
             data=handler.handle(req_model.data, auth_token=auth_token)
         )
-    except Exception:
+    except Exception:  # pragma: no cover
+        # This line is to ensure that any unexpected error will be captured
+        # Testing this behavior would introduce hacks in handle, which is not good
         raise HTTPException(status_code=500, detail="An API Error occurred")
     return res
 

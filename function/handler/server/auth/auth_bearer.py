@@ -39,24 +39,11 @@ class JWEBearer(HTTPBearer):
             JWEBearer, self
         ).__call__(request)
 
-        checked_credentials = ""
-
-        if credentials:
-            if not credentials.scheme == "Bearer":
-                raise HTTPException(
-                    status_code=403, detail="Invalid authentication scheme."
-                )
-            if not self.verify_jwe(credentials.credentials):
-                raise HTTPException(
-                    status_code=403, detail="Invalid token or expired token."
-                )
-            checked_credentials = credentials.credentials
-        else:
+        if not self.verify_jwe(credentials.credentials):
             raise HTTPException(
-                status_code=403, detail="Invalid authorization code."
+                status_code=403, detail="Invalid token or expired token."
             )
-
-        return checked_credentials
+        return credentials.credentials
 
     def verify_jwe(self: Self, jwe_token: str) -> bool:
         """Verify a JWE token.

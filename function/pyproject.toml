@@ -98,14 +98,14 @@ exclude = '''
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = """
---maxfail=10 \
+--maxfail=1 \
 --flake8 \
 --reverse \
 --color=yes \
 --cov=handler \
 --html=docs/pytest_report.html \
 --self-contained-html \
---cov-fail-under=20 \
+--cov-fail-under=90 \
 --cov-report term-missing \
 --cov-report html:docs/cov-report \
 --doctest-modules \

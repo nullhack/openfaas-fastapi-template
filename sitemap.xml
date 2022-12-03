@@ -6,6 +6,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://nullhack.github.io/openfaas-fastapi-template/readme.html</loc>
+         <lastmod>2022-12-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://nullhack.github.io/openfaas-fastapi-template/api/handler.handler.html</loc>
          <lastmod>2022-12-03</lastmod>
          <changefreq>daily</changefreq>

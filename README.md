@@ -200,6 +200,14 @@ This project was created using cookiecutter and nullhack's python-project-templa
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/openfaas-fastapi-template/blob/main/LICENSE) for more information.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/nullhack/openfaas-fastapi-template.svg?style=for-the-badge

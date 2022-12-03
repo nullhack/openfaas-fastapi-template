@@ -5,7 +5,7 @@ import mkdocs_gen_files
 docs_parent_dir = Path(__file__).parent.parent
 
 # Automagically injects README file into the documentation
-readme_path = docs_parent_dir / "README.md"
+readme_path = docs_parent_dir.parent / "README.md"
 if readme_path.exists():
     with open(readme_path, "r") as r:
         with mkdocs_gen_files.open("readme.md", "w") as f:

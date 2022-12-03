@@ -5,8 +5,8 @@ description = "Python template for OpenFAAS functions using FastAPI"
 authors = ["Eric Lopes <nullhack@users.noreply.github.com>"]
 maintainers = ["Eric Lopes <nullhack@users.noreply.github.com>"]
 license = "MIT"
-repository = "https://github.com/nullhack/function"
-documentation = "https://github.com/nullhack/function/tree/main/docs/api/"
+repository = "https://github.com/nullhack/openfaas-fastapi-template"
+documentation = "https://github.com/nullhack/openfaas-fastapi-template/tree/main/docs/api/"
 packages = [
     { include = "handler" },
 ]

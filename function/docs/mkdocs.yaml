@@ -1,10 +1,10 @@
-site_name: function
-site_url: https://nullhack.github.io/function
+site_name: openfaas-fastapi-template
+site_url: https://nullhack.github.io/openfaas-fastapi-template
 site_description: Python template for OpenFAAS functions using FastAPI
 site_author: Eric Lopes
 site_dir: html
-repo_name: nullhack/function
-repo_url: https://github.com/nullhack/function
+repo_name: nullhack/openfaas-fastapi-template
+repo_url: https://github.com/nullhack/openfaas-fastapi-template
 
 plugins:
   - search
@@ -40,7 +40,6 @@ theme:
   #logo: img/logo.svg
   #favicon: img/favicon.png
   language: en
-
 
 nav:
   - index.md

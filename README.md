@@ -20,17 +20,17 @@
 <br />
 <div align="center">
 
-  <h3 align="center"> function</h3>
+  <h3 align="center">openfaas-fastapi-template</h3>
 
   <p align="center">
     Python template for OpenFAAS functions using FastAPI
     <br />
-    <a href="https://nullhack.github.io/function/readme.html"><strong>Explore the docs »</strong></a>
+    <a href="https://nullhack.github.io/openfaas-fastapi-template/readme.html"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nullhack/function/issues">Report Bug</a>
+    <a href="https://github.com/nullhack/openfaas-fastapi-template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/nullhack/function/issues">Request Feature</a>
+    <a href="https://github.com/nullhack/openfaas-fastapi-template/issues">Request Feature</a>
   </p>
 </div>
 
@@ -90,8 +90,8 @@ This Project depends on the following projects.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/nullhack/function
-   cd function
+   git clone https://github.com/nullhack/openfaas-fastapi-template
+   cd openfaas-fastapi-template
    ```
 2. Install Poe the Poet and Poetry
    ```sh
@@ -143,7 +143,7 @@ Some useful examples of how this project can be used:
    ```
    
 
-_For more examples, please refer to the [Documentation](https://nullhack.github.io/function/readme.html)_
+_For more examples, please refer to the [Documentation](https://nullhack.github.io/openfaas-fastapi-template/readme.html)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -154,13 +154,13 @@ _For more examples, please refer to the [Documentation](https://nullhack.github.
 
 - [x] Add tests
 - [x] Add code coverage
-- [ ] Improve documentation
-- [ ] Include more tests
+- [x] Improve documentation
+- [x] Include more tests
+- [ ] Make the template more generic
 
-See the [open issues](https://github.com/nullhack/function/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/nullhack/openfaas-fastapi-template/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- CONTRIBUTING -->
@@ -180,54 +180,36 @@ Don't forget to give the project a star! Thanks again!
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/function/blob/main/LICENSE) for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
 Eric Lopes - [@nullhack](https://github.com/nullhack) - nullhack@users.noreply.github.com
 
-Project Link: [https://github.com/nullhack/function/](https://github.com/nullhack/function/)
+Project Link: [https://github.com/nullhack/openfaas-fastapi-template/](https://github.com/nullhack/openfaas-fastapi-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Some great references to start from
+This project was created using cookiecutter and nullhack's python-project-template:
 
-* [Choose an Open Source License](https://choosealicense.com)
-
-References and sources of inspiration
-
-* [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/)
-* [Best practices for Python projects in 2021](https://mitelman.engineering/blog/python-best-practice/automating-python-best-practices-for-a-new-project/)
-* [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+* [nullhack's python-project-template](https://github.com/nullhack/python-project-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/nullhack/function.svg?style=for-the-badge
-[contributors-url]: https://github.com/nullhack/function/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nullhack/function.svg?style=for-the-badge
-[forks-url]: https://github.com/nullhack/function/network/members
-[stars-shield]: https://img.shields.io/github/stars/nullhack/function.svg?style=for-the-badge
-[stars-url]: https://github.com/nullhack/function/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nullhack/function.svg?style=for-the-badge
-[issues-url]: https://github.com/nullhack/function/issues
+[contributors-shield]: https://img.shields.io/github/contributors/nullhack/openfaas-fastapi-template.svg?style=for-the-badge
+[contributors-url]: https://github.com/nullhack/openfaas-fastapi-template/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nullhack/openfaas-fastapi-template.svg?style=for-the-badge
+[forks-url]: https://github.com/nullhack/openfaas-fastapi-template/network/members
+[stars-shield]: https://img.shields.io/github/stars/nullhack/openfaas-fastapi-template.svg?style=for-the-badge
+[stars-url]: https://github.com/nullhack/openfaas-fastapi-template/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nullhack/openfaas-fastapi-template.svg?style=for-the-badge
+[issues-url]: https://github.com/nullhack/openfaas-fastapi-template/issues
 [license-shield]: https://img.shields.io/badge/license-MIT-green?style=for-the-badge
-[license-url]: https://github.com/nullhack/function/blob/main/LICENSE
+[license-url]: https://github.com/nullhack/openfaas-fastapi-template/blob/main/LICENSE
 

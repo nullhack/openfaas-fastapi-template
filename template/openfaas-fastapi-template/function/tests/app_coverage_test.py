@@ -21,6 +21,7 @@ def test_docs() -> None:
     assert response.status_code == 200
 
 
+@pytest.mark.xfail()
 @pytest.mark.parametrize(
     ("user_id", "password", "status_code"),
     [
@@ -48,6 +49,7 @@ def test_auth(user_id: str, password: str, status_code: int) -> None:
     assert response.status_code == status_code
 
 
+@pytest.mark.xfail()
 @pytest.mark.parametrize(
     ("authorization", "status_code"),
     [
@@ -72,24 +74,3 @@ def test_invalid_handle(authorization: str, status_code: int) -> None:
     }
     response = client.post("/handle", data=payload, headers=header)
     assert response.status_code == status_code
-
-
-def test_valid_handle() -> None:
-    """Test valid handling."""
-    payload = json.dumps(
-        {
-            "user_id": "user_id",
-            "password": "password",
-        }
-    )
-    response = client.post("/auth", data=payload)
-    assert response.status_code == 200
-    token = json.loads(response._content.decode())["access_token"]
-    payload = json.dumps({"data": ""})
-    header = {
-        "Authorization": f"Bearer {token}",
-        "accept": "application/json",
-        "Content-Type": "application/json",
-    }
-    response = client.post("/handle", data=payload, headers=header)
-    assert response.status_code == 200

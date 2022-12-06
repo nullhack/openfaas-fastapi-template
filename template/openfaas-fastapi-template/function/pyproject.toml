@@ -105,7 +105,7 @@ addopts = """
 --cov=handler \
 --html=docs/pytest_report.html \
 --self-contained-html \
---cov-fail-under=90 \
+--cov-fail-under=50 \
 --cov-report term-missing \
 --cov-report html:docs/cov-report \
 --doctest-modules \

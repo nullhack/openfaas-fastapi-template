@@ -4,10 +4,10 @@
 <br />
 <div align="center">
 
-  <h3 align="center">openfaas-fastapi-template</h3>
+  <h3 align="center">openfaas-fastapi-jwe-template</h3>
 
   <p align="center">
-    Python template for OpenFAAS functions using FastAPI
+    Python template for OpenFAAS functions using FastAPI with JWE
     <br />
     <a href="https://github.com/nullhack/openfaas-fastapi-template/issues">Report Bug</a>
     ·
@@ -45,7 +45,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Python template for OpenFAAS functions using FastAPI
+Python template for OpenFAAS functions using FastAPI with JWE
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

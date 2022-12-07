@@ -2,12 +2,14 @@
 import json
 import os
 
-from fastapi import Body, FastAPI, HTTPException, Request
+from fastapi import Body, Depends, FastAPI, HTTPException, Request
 from starlette import status
 from starlette.responses import HTMLResponse
 
 from .. import handler
-from .model import RequestModel, ResponseModel
+from .auth.auth_bearer import JWEBearer
+from .auth.auth_handler import decrypt_jwe, encrypt_jwe
+from .model import RequestModel, ResponseModel, UserLoginSchema
 from .utils.swagger import get_swagger_ui_html
 
 func_name = os.getenv("FUNCNAME", "")
@@ -43,6 +45,27 @@ async def swagger_ui_html() -> HTMLResponse:
     return openapi_html
 
 
+@app.post("/auth", tags=["Auth"], description="User login.")
+async def user_login(user: UserLoginSchema = body) -> dict:
+    """Returns a JWE if the user is authenticated.
+
+    Arguments:
+        user (UserLoginSchema): User login object.
+
+    Returns:
+        A JWE response signed.
+
+    Raises:
+        HTTPException: If user fails to authenticate.
+    """
+    jwe_response = {}
+    if handler.check_auth(user):
+        jwe_response = encrypt_jwe(iss=func_name)
+    else:
+        raise HTTPException(status_code=403, detail="Wrong credentials")
+    return jwe_response
+
+
 @app.get("/", tags=["Request"], description="Read root.")
 @app.post("/", tags=["Request"], description="Read root.")
 async def read_root(request: Request) -> dict:
@@ -63,6 +86,7 @@ async def read_root(request: Request) -> dict:
     description="Handle the request.",
     response_model=ResponseModel,
     tags=["Request"],
+    dependencies=[Depends(JWEBearer())],
 )
 async def handle_request(
     *,
@@ -82,7 +106,11 @@ async def handle_request(
         HTTPException: When the handler raises any Exception.
     """
     try:
-        res = ResponseModel(data=handler.handle(req_model.data))
+        token = await JWEBearer()(request)
+        auth_token = decrypt_jwe(token)
+        res = ResponseModel(
+            data=handler.handle(req_model.data, auth_token=auth_token)
+        )
     except Exception:  # pragma: no cover
         # This line is to ensure that any unexpected error will be captured
         # Testing this behavior would introduce hacks in handle, which is not good

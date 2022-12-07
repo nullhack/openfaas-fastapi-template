@@ -1,5 +1,6 @@
 """Coverage test for auth module."""
 import json
+import os
 
 import pytest
 from fastapi.testclient import TestClient
@@ -22,17 +23,29 @@ def test_docs() -> None:
 
 
 @pytest.mark.xfail()
+def test_password_changed() -> None:
+    """Ensure that the password used is not the default."""
+    passwd = os.getenv("PASSWD", "ChangeMe")
+    payload = json.dumps(
+        {
+            "user_id": "user_id",
+            "password": passwd,
+        }
+    )
+    response = client.post("/auth", data=payload)
+    assert response.status_code == 200
+
+
 @pytest.mark.parametrize(
     ("user_id", "password", "status_code"),
     [
-        ("user_id", "password", 200),
         ("", "", 403),
         ("", "password", 403),
         ("user_id", "", 403),
     ],
 )
 def test_auth(user_id: str, password: str, status_code: int) -> None:
-    """Test valid access token.
+    """Test access token.
 
     Arguments:
         user_id (str): User id used to login.
@@ -49,7 +62,6 @@ def test_auth(user_id: str, password: str, status_code: int) -> None:
     assert response.status_code == status_code
 
 
-@pytest.mark.xfail()
 @pytest.mark.parametrize(
     ("authorization", "status_code"),
     [

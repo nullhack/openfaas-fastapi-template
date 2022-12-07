@@ -35,9 +35,6 @@ CMD ["test"]
 
 FROM --platform=$BUILDPLATFORM python:$BUILDTAG as prod
 
-ARG FUNCNAME=''
-ENV FUNCNAME=$FUNCNAME
-
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
 RUN chmod +x /usr/bin/fwatchdog
@@ -54,6 +51,9 @@ COPY --chown=user:user --from=test /home/user/app/requirements.txt requirements.
 COPY --chown=user:user --from=test /home/user/app/dist dist
 
 RUN pip install --no-cache -r requirements.txt dist/*.whl --user
+
+ARG FUNCNAME=''
+ENV FUNCNAME=$FUNCNAME
 
 ENV fprocess="python -m handler.server.api"
 ENV cgi_headers="true"

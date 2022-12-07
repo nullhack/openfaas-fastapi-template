@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Generated docs
+pytest_report.html
+cov-report/
+
 # Distribution / packaging
 .Python
 build/

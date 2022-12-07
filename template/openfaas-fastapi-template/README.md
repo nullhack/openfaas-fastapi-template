@@ -1,32 +1,13 @@
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
 
-  <h3 align="center">openfaas-fastapi-template</h3>
+  <h3 align="center">openfaas-fastapi-jwe-template</h3>
 
   <p align="center">
-    Python template for OpenFAAS functions using FastAPI
-    <br />
-    <a href="https://nullhack.github.io/openfaas-fastapi-template/readme.html"><strong>Explore the docs »</strong></a>
-    <br />
+    Python template for OpenFAAS functions using FastAPI with JWE
     <br />
     <a href="https://github.com/nullhack/openfaas-fastapi-template/issues">Report Bug</a>
     ·
@@ -64,86 +45,23 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Python template for OpenFAAS functions using FastAPI
+Python template for OpenFAAS functions using FastAPI with JWE
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To run this project locally, you will need to install the prerequisites and follow the installation section.
-
 ### Prerequisites
-
-This Project depends on the following projects.
-* Poetry
-  ```sh
-  pip install --user --upgrade poetry
-  ```
-
-* Poe the Poet
-  ```sh
-  pip install --user --upgrade poethepoet
-  ```
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/nullhack/openfaas-fastapi-template
-   cd openfaas-fastapi-template
-   ```
-2. Install Poe the Poet and Poetry
-   ```sh
-   pip install --user --upgrade poethepoet poetry
-   ```
-3. Install requirements for development
-   ```sh
-   poe install-dev
-   ```
-4. Run tests
-   ```sh
-   poe test
-   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
-Some useful examples of how this project can be used:
-
-*  Install requirements
-   ```sh
-   poe install-dev
-   ```
-
-*  Run tests
-   ```sh
-   poe test
-   ```
-
-*  Generate API documentation
-   ```sh
-   poe doc
-   ```
-
-*  Build a docker image for tests
-   ```sh
-   poe docker-build --target test --build-tag 3.10-alpine
-   docker run -ti --rm handler:test-3.10-alpine
-   ```
-
-*  Build a docker image to run the root files only without running any test
-   ```sh
-   poe docker-build --target prod --build-tag 3.10-alpine --no-test
-   docker run -ti --rm handler:prod-3.10-alpine
-   ```
-   
-
-_For more examples, please refer to the [Documentation](https://nullhack.github.io/openfaas-fastapi-template/readme.html)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -152,11 +70,7 @@ _For more examples, please refer to the [Documentation](https://nullhack.github.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add tests
-- [x] Add code coverage
-- [x] Improve documentation
-- [x] Include more tests
-- [ ] Make the template more generic
+- [ ] Include a roadmap to this template
 
 See the [open issues](https://github.com/nullhack/openfaas-fastapi-template/issues) for a full list of proposed features (and known issues).
 
@@ -193,9 +107,9 @@ Project Link: [https://github.com/nullhack/openfaas-fastapi-template/](https://g
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-This project was created using cookiecutter and nullhack's python-project-template:
+This project was created using nullhack's openfaas-fastapi-template:
 
-* [nullhack's python-project-template](https://github.com/nullhack/python-project-template/)
+* [nullhack's openfaas-fastapi-template](https://github.com/nullhack/openfaas-fastapi-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

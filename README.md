@@ -64,7 +64,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Python template for OpenFAAS functions using FastAPI
+Python template for OpenFAAS functions using FastAPI. This template has two flavours, a simple project using fastapi and a more complex with authentication using JWE (encrypted JWT) for improved security.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -75,35 +75,38 @@ To run this project locally, you will need to install the prerequisites and foll
 
 ### Prerequisites
 
-This Project depends on the following projects.
-* Poetry
+* This Project depends on [OpenFAAS](https://www.openfaas.com/)
   ```sh
-  pip install --user --upgrade poetry
-  ```
-
-* Poe the Poet
-  ```sh
-  pip install --user --upgrade poethepoet
+  curl -sSL https://cli.openfaas.com | sudo -E sh
   ```
 
 ### Installation
 
-1. Clone the repo
+1. Pull the template
    ```sh
-   git clone https://github.com/nullhack/openfaas-fastapi-template
-   cd openfaas-fastapi-template
+   faas template pull https://github.com/nullhack/openfaas-fastapi-template/
    ```
-2. Install Poe the Poet and Poetry
+2. Create a new function
    ```sh
-   pip install --user --upgrade poethepoet poetry
+   faas new --lang openfaas-fastapi-template myf
    ```
-3. Install requirements for development
+   
+   or
+   
    ```sh
-   poe install-dev
+   faas new --lang openfaas-fastapi-jwe-template myf
    ```
-4. Run tests
+   
+3. Include the function name as environment variable into the `myf.yml` file
    ```sh
-   poe test
+   ...
+       environment:
+         FUNCNAME: myf
+   ...
+   ```
+4. build and publish the function to the server
+   ```sh
+   faas up -f myf.yml
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -111,12 +114,14 @@ This Project depends on the following projects.
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Alternative Usage
 
-Some useful examples of how this project can be used:
+It's possible to directly use the template without *OpenFAAS* or to test it before pushing to the server.
 
 *  Install requirements
    ```sh
+   pip install poethepoet poetry
+   # go to the function folder
    poe install-dev
    ```
 
@@ -152,11 +157,7 @@ _For more examples, please refer to the [Documentation](https://nullhack.github.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add tests
-- [x] Add code coverage
-- [x] Improve documentation
-- [x] Include more tests
-- [ ] Make the template more generic
+- [ ] Improve JWE template coverage
 
 See the [open issues](https://github.com/nullhack/openfaas-fastapi-template/issues) for a full list of proposed features (and known issues).
 
@@ -183,7 +184,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-Eric Lopes - [@nullhack](https://github.com/nullhack) - nullhack@users.noreply.github.com
+Eric Lopes - [@nullhack](https://github.com/nullhack)
 
 Project Link: [https://github.com/nullhack/openfaas-fastapi-template/](https://github.com/nullhack/openfaas-fastapi-template/)
 
